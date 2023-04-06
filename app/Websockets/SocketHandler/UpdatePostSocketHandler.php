@@ -25,11 +25,6 @@ class UpdatePostSocketHandler extends BaseSocketHandler implements MessageCompon
 
         $message = json_decode($msg->getPayload(), true)['message'];
         // Convert the updated post to a JSON string
-        $response = json_encode([
-            'message' => $message,
-            'from' => json_decode($msg->getPayload(), true)['from'],
-            'to' => json_decode($msg->getPayload(), true)['to'],
-        ]);
         $chatMessage = new ChatMessage();
         $chatMessage->message = json_decode($msg->getPayload(), true)['message'];
         $chatMessage->from_user = json_decode($msg->getPayload(), true)['from'];
@@ -37,6 +32,8 @@ class UpdatePostSocketHandler extends BaseSocketHandler implements MessageCompon
         $chatMessage->is_read = 0;
         $chatMessage->sent_at = now();
         $chatMessage->save();
+        
+        $response = json_encode($chatMessage);
 
         // Send the response to all connected clients
         foreach ($this->clients as $client) {
