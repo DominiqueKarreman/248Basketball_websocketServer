@@ -26,7 +26,9 @@ class UpdatePostSocketHandler extends BaseSocketHandler implements MessageCompon
         $message = json_decode($msg->getPayload(), true)['message'];
         // Convert the updated post to a JSON string
         $response = json_encode([
-            'data' => $message,
+            'message' => $message,
+            'from' => json_decode($msg->getPayload(), true)['from'],
+            'to' => json_decode($msg->getPayload(), true)['to'],
         ]);
         $chatMessage = new ChatMessage();
         $chatMessage->message = json_decode($msg->getPayload(), true)['message'];
