@@ -2,11 +2,12 @@
 
 namespace App\Websockets\SocketHandler;
 
-use App\Http\Resources\PostResource;
-use App\Models\Post;
-use App\Repositories\PostRepository;
 use Exception;
+
+use App\Models\ChatMessage;
 use Ratchet\ConnectionInterface;
+use App\Http\Resources\PostResource;
+use App\Repositories\PostRepository;
 use Ratchet\RFC6455\Messaging\MessageInterface;
 use Ratchet\WebSocket\MessageComponentInterface;
 
@@ -25,14 +26,21 @@ class UpdatePostSocketHandler extends BaseSocketHandler implements MessageCompon
         $message = json_decode($msg->getPayload(), true)['message'];
         // Convert the updated post to a JSON string
         $response = json_encode([
-            'event' => 'asdasd',
             'data' => $message,
         ]);
+        $chatMessage = new ChatMessage();
+        $chatMessage->message = json_decode($msg->getPayload(), true)['message'];
+        $chatMessage->from_user = json_decode($msg->getPayload(), true)['from'];
+        $chatMessage->to_user = json_decode($msg->getPayload(), true)['to'];
+        $chatMessage->is_read = 0;
+        $chatMessage->sent_at = now();
+        $chatMessage->save();
 
         // Send the response to all connected clients
         foreach ($this->clients as $client) {
             // dump($client->user);
             dump(json_decode($msg->getPayload(), true));
+
             if ($client->user->id == json_decode($msg->getPayload(), true)['from'] || json_decode($msg->getPayload(), true)['to'] == $client->user->id) {
                 $client->send($response);
             }
