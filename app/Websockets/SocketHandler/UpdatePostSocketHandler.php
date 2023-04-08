@@ -25,26 +25,26 @@ class UpdatePostSocketHandler extends BaseSocketHandler implements MessageCompon
 
         $message = json_decode($msg->getPayload(), true)['message'];
         if (json_decode($msg->getPayload(), true)['typing'] == true) {
-            
+
             foreach ($this->clients as $client) {
                 // dump($client->user);
                 dump(json_decode($msg->getPayload(), true));
 
                 if ($client->user->id == json_decode($msg->getPayload(), true)['from'] || json_decode($msg->getPayload(), true)['to'] == $client->user->id) {
-                    $client->send(json_encode(['typing' => true, 'from' => json_decode($msg->getPayload(), true)['from']]));
+                    $client->send(json_encode(['typing' => true, 'from' => json_decode($msg->getPayload(), true)['from'], 'message' => '']));
                 }
                 // $client->send($response);
             }
             return;
         }
         if (json_decode($msg->getPayload(), true)['typing'] == false) {
-            
+
             foreach ($this->clients as $client) {
                 // dump($client->user);
                 dump(json_decode($msg->getPayload(), true));
 
                 if ($client->user->id == json_decode($msg->getPayload(), true)['from'] || json_decode($msg->getPayload(), true)['to'] == $client->user->id) {
-                    $client->send(json_encode(['typing' => false, 'from' => json_decode($msg->getPayload(), true)['from']]));
+                    $client->send(json_encode(['typing' => false, 'from' => json_decode($msg->getPayload(), true)['from'],'message' => '']));
                 }
                 // $client->send($response);
             }
