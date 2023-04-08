@@ -24,6 +24,32 @@ class UpdatePostSocketHandler extends BaseSocketHandler implements MessageCompon
         // Find the post by ID
 
         $message = json_decode($msg->getPayload(), true)['message'];
+        if (json_decode($msg->getPayload(), true)['typing'] == true) {
+            
+            foreach ($this->clients as $client) {
+                // dump($client->user);
+                dump(json_decode($msg->getPayload(), true));
+
+                if ($client->user->id == json_decode($msg->getPayload(), true)['from'] || json_decode($msg->getPayload(), true)['to'] == $client->user->id) {
+                    $client->send(['typing' => true]);
+                }
+                // $client->send($response);
+            }
+            return;
+        }
+        if (json_decode($msg->getPayload(), true)['typing'] == false) {
+            
+            foreach ($this->clients as $client) {
+                // dump($client->user);
+                dump(json_decode($msg->getPayload(), true));
+
+                if ($client->user->id == json_decode($msg->getPayload(), true)['from'] || json_decode($msg->getPayload(), true)['to'] == $client->user->id) {
+                    $client->send(['typing' => false]);
+                }
+                // $client->send($response);
+            }
+            return;
+        }
         // Convert the updated post to a JSON string
         $chatMessage = new ChatMessage();
         $chatMessage->message = json_decode($msg->getPayload(), true)['message'];
@@ -32,7 +58,7 @@ class UpdatePostSocketHandler extends BaseSocketHandler implements MessageCompon
         $chatMessage->is_read = 0;
         $chatMessage->sent_at = now();
         $chatMessage->save();
-        
+
         $response = json_encode($chatMessage);
 
         // Send the response to all connected clients
