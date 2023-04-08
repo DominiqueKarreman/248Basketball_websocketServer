@@ -31,7 +31,7 @@ class UpdatePostSocketHandler extends BaseSocketHandler implements MessageCompon
                 dump(json_decode($msg->getPayload(), true));
 
                 if ($client->user->id == json_decode($msg->getPayload(), true)['from'] || json_decode($msg->getPayload(), true)['to'] == $client->user->id) {
-                    $client->send('typing');
+                    $client->send(json_encode(['typing' => true]));
                 }
                 // $client->send($response);
             }
