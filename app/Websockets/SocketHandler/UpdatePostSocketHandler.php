@@ -37,7 +37,7 @@ class UpdatePostSocketHandler extends BaseSocketHandler implements MessageCompon
             }
             return;
         }
-        if (json_decode($msg->getPayload(), true)['typing'] == false) {
+        if (json_decode($msg->getPayload(), true)['typing'] == false && $message == 'stopped typing') {
 
             foreach ($this->clients as $client) {
                 // dump($client->user);
