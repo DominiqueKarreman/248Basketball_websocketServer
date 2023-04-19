@@ -73,7 +73,7 @@ abstract class BaseSocketHandler implements MessageComponentInterface
         
 
         // dump($user, );
-        $this->user->online = "Online";
+        $user->online = "Online";
         $this->user = $user;
         $conn->user = $user;
         $this->clients->attach($conn);
