@@ -73,6 +73,7 @@ abstract class BaseSocketHandler implements MessageComponentInterface
         
 
         // dump($user, );
+        $this->user->online = "Online";
         $this->user = $user;
         $conn->user = $user;
         $this->clients->attach($conn);
@@ -81,6 +82,7 @@ abstract class BaseSocketHandler implements MessageComponentInterface
     function onClose(ConnectionInterface $conn)
     {
         dump('closed');
+        $this->user->online = "Last online: " . date('d-m-Y H:i:s');
     }
 
     function onError(ConnectionInterface $conn, \Exception $e)
