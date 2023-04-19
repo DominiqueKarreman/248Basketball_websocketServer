@@ -89,7 +89,8 @@ abstract class BaseSocketHandler implements MessageComponentInterface
         $time = Carbon::now();
         $isoString = $time->toIso8601String();
         $this->user->online = $isoString;
-     
+        dump($this->user);
+        dump($this->user->online);
         $this->user->save();    
     }
 
