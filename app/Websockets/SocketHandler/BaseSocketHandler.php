@@ -85,7 +85,7 @@ abstract class BaseSocketHandler implements MessageComponentInterface
     function onClose(ConnectionInterface $conn)
     {
         dump('closed');
-        $this->user->online = "Last online: " . date('d-m-Y H:i:s');
+        $this->user->online = date('d-m-Y H:i:s');
         $this->user->save();    
     }
 
