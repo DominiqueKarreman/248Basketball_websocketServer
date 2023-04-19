@@ -2,14 +2,15 @@
 
 namespace App\Websockets\SocketHandler;
 
+use Carbon\Carbon;
 use App\Models\User;
 use Ratchet\ConnectionInterface;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use Ratchet\WebSocket\WebSocketDecorator;
 use BeyondCode\LaravelWebSockets\Apps\App;
 use Ratchet\WebSocket\MessageComponentInterface;
 use BeyondCode\LaravelWebSockets\QueryParameters;
 use BeyondCode\LaravelWebSockets\WebSockets\Exceptions\UnknownAppKey;
-use Ratchet\WebSocket\WebSocketDecorator;
 
 abstract class BaseSocketHandler implements MessageComponentInterface
 {
@@ -85,8 +86,10 @@ abstract class BaseSocketHandler implements MessageComponentInterface
     function onClose(ConnectionInterface $conn)
     {
         dump('closed');
-        $this->user->online = date('d-m-Y H:i:s');
-        $this->user->online = $this->user->online->toIso8601String();
+        $time = Carbon::now();
+        $isoString = $time->toIso8601String();
+        $this->user->online = $isoString;
+     
         $this->user->save();    
     }
 
