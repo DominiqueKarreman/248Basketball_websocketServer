@@ -86,6 +86,7 @@ abstract class BaseSocketHandler implements MessageComponentInterface
     {
         dump('closed');
         $this->user->online = "Last online: " . date('d-m-Y H:i:s');
+        $this->user->save();    
     }
 
     function onError(ConnectionInterface $conn, \Exception $e)
