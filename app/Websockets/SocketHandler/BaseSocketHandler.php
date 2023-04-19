@@ -86,6 +86,7 @@ abstract class BaseSocketHandler implements MessageComponentInterface
     {
         dump('closed');
         $this->user->online = date('d-m-Y H:i:s');
+        $this->user->online = $this->user->online->toIso8601String();
         $this->user->save();    
     }
 
